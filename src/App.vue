@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header-page>
+    <header-page >
     </header-page>
     <main>
       <router-view></router-view>
@@ -34,14 +34,7 @@ body {
 .el-main {
   padding: 20px;
 }
-.jumbotron {
-  background-color: aquamarine;
-  padding: 5px;
-  border: 1ch;
-}
-.el-autocomplete {
-  width: 70%;
-}
+
 .houselist {
   background-repeat: no-repeat;
   background-position: center;

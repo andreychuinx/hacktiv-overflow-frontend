@@ -1,8 +1,8 @@
 <template>
-  <el-main>
+  <el-main v-if="showEdit">
     <el-row>
-      <el-col v-if="authQuestion">
-        <el-form ref="form" :model="form" label-width="120px">
+      <el-col>
+        <el-form ref="form" :model="form" label-width="0px">
           <el-form-item label="Question">
             <el-input v-model="form.question"></el-input>
           </el-form-item>
@@ -14,9 +14,6 @@
             <el-button>Cancel</el-button>
           </el-form-item>
         </el-form>
-      </el-col>
-      <el-col v-else>
-        YOU NEED TO LOGIN FIRST
       </el-col>
     </el-row>
   </el-main>
@@ -30,25 +27,40 @@ export default {
       form: {
         question: '',
         desc: ''
-      }
+      },
+      showEdit: false
     }
   },
+  mounted(){
+    this.$store.dispatch('actQuestion', {
+      id: this.$route.params.id
+    })
+    .then(() => {
+      this.showEdit = true
+      this.form.question = this.getQuestion.question
+      this.form.desc = this.getQuestion.description
+    })
+  },
   computed: {
-    ...mapGetters(['authQuestion'])
+    ...mapGetters(['getQuestion'])
   },
   methods: {
     onSubmit() {
       this.$store
-        .dispatch('addQuestion', {
+        .dispatch('editQuestion', {
+          id: this.$route.params.id,
           question: this.form.question,
           description: this.form.desc
         })
         .then(() => {
           this.$message({
-            message: 'Congrats, Question Success',
-            type: 'success'
+            message: 'Congrats, Signup Success',
+            type: 'success',
           })
-          this.$router.push({ name: 'homePage' })
+          this.$router.push({name: 'accountPage'})
+        })
+        .catch(err =>{
+          console.log(err)
         })
     }
   },
